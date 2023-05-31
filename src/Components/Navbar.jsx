@@ -1,63 +1,54 @@
 import React from 'react'
-import { useState } from 'react'
-import {FaBars,FaTimes} from 'react-icons/fa'
-import { Link } from 'react-scroll'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { UserAuth } from '../Context/AuthContext'
 const Navbar = () => {
+    const {user,logout} = UserAuth()
+    const navigate = useNavigate() 
+    // console.log(user.email)
     
-    let [nav , setnav]=useState(false)
+    const handlelogout=async()=>{
+      try {
+        await logout() ; 
+        navigate('/')
+      } catch(error) {
+         console.log(error)
+      }
+
+    }
 
 
-    let links  =[
-        {
-            id:1  , 
-            link : 'home'
-        },
-        {
-            id:2  , 
-            link : 'about'
-        },
-        {
-            id:3  , 
-            link : 'experience'
-        },
-        {
-            id:4  , 
-            link : 'contact'
-        }
-    ]
+ 
   return (
+    <div className='flex justify-between z-[100] absolute w-full mt-2'>
+    <Link to='/'>
+    <h1 className='text-red-600 md:text-4xl text-2xl font-bold'>Netflix</h1>
+    </Link>
 
-    <div className='flex bg-black justify-between items-center w-full h-20 text-white fixed '>
+   {user?.email ? <div className='text-white mr-3 '>
 
-    <div>
-    <h1 className='font-signature text-5xl p-5'>Kaushik</h1>
-    </div>
+<Link to='/account' >
+<button className='mr-3 rounded px-3 py-2 ' >Account</button>
+</Link>
+  
+<button onClick={handlelogout} className='bg-red-600  rounded px-3 py-2' >Logout</button>
 
-    <ul className=' hidden md:flex '>
-        {links.map(link=>(
-            <li key={link.id}  className="text-gray-500 px-4 capitalize font-medium cursor-pointer hover:scale-105" >
-            <Link to={link.link} smooth duration={500}>{link.link}</Link>
-            </li>
-        ))}
-        
-    </ul>
 
-    <div  onClick={()=>setnav(!nav)}  className='cursor-pointer pr-4 z-10 text-gray-500 md:hidden' >
-    {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
-    </div>
-    
-    {nav && (
-    <ul className='flex flex-col justify-center items-center absolute left-0 top-0 w-full h-screen bg-gradient-to-b from-black to-gray-800 text-gray-500'>
-    {links.map(link=>(
-            <li key={link.id}  className=" px-4 capitalize cursor-pointer py-6 text-4xl" > 
-            <Link onClick={()=>setnav(!nav)} to={link.link} smooth duration={500}>{link.link}</Link></li>
-        ))}
 
-    </ul>
-    )}
+</div>
 
-      
+:  
+
+<div className='text-white mr-3 '>
+
+<Link to='/login' >
+<button className='mr-3 rounded px-3 py-2 ' >Sign in</button>
+</Link>
+<Link to='/signup'>
+<button className='bg-red-600  rounded px-3 py-2' >Sign up</button>
+</Link>
+
+
+</div>}
     </div>
   )
 }

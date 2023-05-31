@@ -1,11 +1,12 @@
+import Home from "./Pages/Home";
 import React from "react";
-import Home from "./Components/Home";
-import Navbar from "./Components/Navbar";
-import SocialLinks from "./Components/SocialLinks";
-import About from "./Components/About";
-import Portfolio from "./Components/Portfolio";
-import Experience from "./Components/Experience";
-import Contact from "./Components/Contact";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { AuthContextProvider } from "./Context/AuthContext";
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
+import Account from "./Pages/Account";
+
 
 
 
@@ -13,20 +14,26 @@ import Contact from "./Components/Contact";
 
 function App() {
      return (
-          <div>
-               <Navbar />
-               <Home />
-               <About/>
-               <Portfolio/>
-               <Experience/>
-               <Contact/>
-               
+        <div>
+        <AuthContextProvider>
+        <Navbar/>
+        <Routes>
+         <Route path="/" element={<Home/>} />
+         <Route path="/login" element={<Login/>} />
+         <Route path="/signup" element={<Signup/>} />
+         <Route path="/account" element={<Account/>} />
+        </Routes>
 
-               <SocialLinks/>
-
-
-
-          </div>
+        </AuthContextProvider>
+       
+         
+           
+            
+            
+        </div>
+           
+             
+          
 
      )
 
